@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="">
+    <title>Manage Members</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
+    <link rel="stylesheet" href="http://localhost:8000/admin/css/style.css">
+</head>
+<body class="admin-body">
+    <div class="admin-shell">
+        <aside class="sidebar">
+    <div class="sidebar-brand">
+        <span class="brand-mark">A</span>
+        <div>
+            <strong>Admin</strong>
+            <small>Control Panel</small>
+        </div>
+    </div>
+
+    <nav class="sidebar-menu">
+        <p class="menu-label">Main</p>
+
+        <a href="http://localhost:8000/admin/dashboard" class="menu-link ">
+            <span class="menu-icon"><i class="fa-solid fa-chart-line"></i></span>
+            <span class="menu-text">Dashboard</span>
+            <span class="menu-arrow">></span>
+        </a>
+
+        <p class="menu-label">Manage</p>
+
+        <a href="http://localhost:8000/admin/announcements" class="menu-link ">
+            <span class="menu-icon"><i class="fa-solid fa-bullhorn"></i></span>
+            <span class="menu-text">Announcements</span>
+        </a>
+
+        <a href="http://localhost:8000/admin/profile" class="menu-link ">
+            <span class="menu-icon"><i class="fa-solid fa-user-shield"></i></span>
+            <span class="menu-text">Admin Profile</span>
+        </a>
+
+        <a href="http://localhost:8000/admin/members" class="menu-link ">
+            <span class="menu-icon"><i class="fa-solid fa-users"></i></span>
+            <span class="menu-text">Manage Members</span>
+        </a>
+
+        <details class="sidebar-dropdown" >
+            <summary class="menu-link ">
+                <span class="menu-icon"><i class="fa-solid fa-coins"></i></span>
+                <span class="menu-text">Deposit</span>
+                <span class="menu-arrow">></span>
+            </summary>
+
+            <div class="sidebar-submenu">
+                <a href="http://localhost:8000/admin/deposits/settings" class="">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Deposit Settings</span>
+                </a>
+                <a href="http://localhost:8000/admin/deposits" class="">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>Deposits</span>
+                </a>
+                <a href="http://localhost:8000/admin/deposits/reports" class="">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Deposit Reports</span>
+                </a>
+            </div>
+        </details>
+
+        <details class="sidebar-dropdown" >
+            <summary class="menu-link ">
+                <span class="menu-icon"><i class="fa-solid fa-chart-line"></i></span>
+                <span class="menu-text">Activation</span>
+                <span class="menu-arrow">></span>
+            </summary>
+
+            <div class="sidebar-submenu">
+                <a href="http://localhost:8000/admin/activations" class="">
+                    <i class="fa-solid fa-user-check"></i>
+                    <span>Activations</span>
+                </a>
+                <a href="http://localhost:8000/admin/activations/upgrades" class="">
+                    <i class="fa-solid fa-arrow-up-right-dots"></i>
+                    <span>Upgrades</span>
+                </a>
+                <a href="http://localhost:8000/admin/activations/package-history" class="">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Package History</span>
+                </a>
+            </div>
+        </details>
+
+        <details class="sidebar-dropdown" >
+            <summary class="menu-link ">
+                <span class="menu-icon"><i class="fa-solid fa-hand-holding-dollar"></i></span>
+                <span class="menu-text">Investment</span>
+                <span class="menu-arrow">></span>
+            </summary>
+
+            <div class="sidebar-submenu">
+                <a href="http://localhost:8000/admin/investments" class="">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Investments</span>
+                </a>
+                <a href="http://localhost:8000/admin/investments/roi-distribution" class="">
+                    <i class="fa-solid fa-gears"></i>
+                    <span>ROI Distribution</span>
+                </a>
+                <a href="http://localhost:8000/admin/investments/roi-schedule" class="">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>ROI Schedule</span>
+                </a>
+                <a href="http://localhost:8000/admin/investments/reports" class="">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Investment Reports</span>
+                </a>
+            </div>
+        </details>
+
+        <details class="sidebar-dropdown" >
+            <summary class="menu-link ">
+                <span class="menu-icon"><i class="fa-solid fa-dollar-sign"></i></span>
+                <span class="menu-text">Income</span>
+                <span class="menu-arrow">></span>
+            </summary>
+
+            <div class="sidebar-submenu">
+                <a href="http://localhost:8000/admin/incomes/community" class="">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Community Income</span>
+                </a>
+                <a href="http://localhost:8000/admin/incomes/direct" class="">
+                    <i class="fa-solid fa-user-check"></i>
+                    <span>Direct Income</span>
+                </a>
+                <a href="http://localhost:8000/admin/incomes/sponsor-roi" class="">
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                    <span>Sponsor ROI Income</span>
+                </a>
+            </div>
+        </details>
+
+        <details class="sidebar-dropdown" >
+            <summary class="menu-link ">
+                <span class="menu-icon"><i class="fa-solid fa-money-bill-transfer"></i></span>
+                <span class="menu-text">P2P</span>
+                <span class="menu-arrow">></span>
+            </summary>
+
+            <p class="sidebar-submenu-heading">P2P MANAGEMENT</p>
+
+            <div class="sidebar-submenu">
+                <a href="http://localhost:8000/admin/p2p/member-wallets" class="">
+                    <i class="fa-solid fa-users-gear"></i>
+                    <span>Member Wallets</span>
+                </a>
+                <a href="http://localhost:8000/admin/p2p/wallet-ledger" class="">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>Wallet Ledger</span>
+                </a>
+                <a href="http://localhost:8000/admin/p2p/wallet-adjustments" class="">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Wallet Adjustments</span>
+                </a>
+                <a href="http://localhost:8000/admin/p2p/wallet-reports" class="">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Wallet Reports</span>
+                </a>
+                <a href="http://localhost:8000/admin/p2p/wallet-audit-logs" class="">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>Wallet Audit Logs</span>
+                </a>
+            </div>
+        </details>
+
+        <details class="sidebar-dropdown" >
+            <summary class="menu-link ">
+                <span class="menu-icon"><i class="fa-solid fa-money-bill-trend-up"></i></span>
+                <span class="menu-text">WITHDRAWAL</span>
+                <span class="menu-arrow">></span>
+            </summary>
+
+            <p class="sidebar-submenu-heading">WITHDRAWAL &amp; PAYOUTS</p>
+
+            <div class="sidebar-submenu">
+                <a href="http://localhost:8000/admin/withdrawals/requests" class="">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                    <span>Withdrawal Requests</span>
+                </a>
+                <a href="http://localhost:8000/admin/withdrawals/approved" class="">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Approved Withdrawals</span>
+                </a>
+                <a href="http://localhost:8000/admin/withdrawals/cancelled" class="">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                    <span>Cancelled Withdrawals</span>
+                </a>
+                <a href="http://localhost:8000/admin/withdrawals/reports" class="">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>Withdrawal Reports</span>
+                </a>
+                <a href="http://localhost:8000/admin/withdrawals/private-keys" class="">
+                    <i class="fa-solid fa-key"></i>
+                    <span>Private Key Management</span>
+                </a>
+            </div>
+        </details>
+
+        <details class="sidebar-dropdown" >
+            <summary class="menu-link ">
+                <span class="menu-icon"><i class="fa-solid fa-headset"></i></span>
+                <span class="menu-text">SUPPORT</span>
+                <span class="menu-arrow">></span>
+            </summary>
+
+            <p class="sidebar-submenu-heading">SUPPORT QUEUES</p>
+
+            <div class="sidebar-submenu">
+                <a href="http://localhost:8000/admin/support/open" class="">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>Open Tickets</span>
+                </a>
+                <a href="http://localhost:8000/admin/support/closed" class="">
+                    <i class="fa-solid fa-folder"></i>
+                    <span>Closed Tickets</span>
+                </a>
+                <a href="http://localhost:8000/admin/support/all" class="">
+                    <i class="fa-solid fa-list"></i>
+                    <span>All Tickets</span>
+                </a>
+            </div>
+        </details>
+
+        <p class="menu-label">System</p>
+
+        <a href="http://localhost:8000/admin/settings" class="menu-link ">
+            <span class="menu-icon">S</span>
+            <span class="menu-text">Settings</span>
+            <span class="menu-badge">New</span>
+        </a>
+
+        <form action="http://localhost:8000/logout" method="POST">
+            <input type="hidden" name="_token" value="" autocomplete="off">            <button type="submit" class="menu-link menu-button">
+                <span class="menu-icon">L</span>
+                <span class="menu-text">Logout</span>
+            </button>
+        </form>
+    </nav>
+</aside>
+        <div class="sidebar-backdrop" data-sidebar-close></div>
+
+        <div class="admin-main">
+            <header class="topbar">
+    <div class="topbar-left">
+        <button type="button" class="icon-button menu-toggle" aria-label="Toggle sidebar" data-sidebar-toggle>
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="topbar-search">
+            <span class="search-icon">S</span>
+            <input type="search" placeholder="Search..." aria-label="Search">
+        </div>
+    </div>
+
+    <div class="topbar-actions">
+        
+
+        <div class="admin-profile">
+                            <span class="profile-avatar">A</span>
+                        <div>
+                <strong>Admin</strong>
+                <small>Administrator</small>
+            </div>
+        </div>
+
+        <button type="button" class="header-icon" title="Settings">ST</button>
+
+        <form action="http://localhost:8000/logout" method="POST">
+            <input type="hidden" name="_token" value="" autocomplete="off">            <button type="submit" class="btn btn-outline">Logout</button>
+        </form>
+    </div>
+</header>
+
+            <main class="content-area">
+                
+                
+                    <div class="page-header">
+        <div>
+            <p class="page-kicker">Admin Panel</p>
+            <h1>Manage Members</h1>
+        </div>
+    </div>
+
+    <section class="panel">
+        <div class="table-wrap">
+            <table class="table table-bordered table-striped admin-datatable">
+                <thead>
+                    <tr>
+                        <th>Member ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Wallet</th>
+                        <th>Joined</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                            <tr>
+                            <td>abc1234</td>
+                            <td>jojo</td>
+                            <td>jojo@gmail.com</td>
+                            <td><span class="status success">Active</span></td>
+                            <td>100.00</td>
+                            <td>06 Mar 2026</td>
+                            <td><a href="http://localhost:8000/admin/members/1" class="btn btn-outline">View</a></td>
+                        </tr>
+                                    </tbody>
+            </table>
+        </div>
+        
+    </section>
+            </main>
+
+            <footer class="admin-footer">
+    <div class="footer-left">
+        &copy; 2026 Auto Grow. All rights reserved.
+    </div>
+    <div class="footer-right">
+        Designed for Admin Panel
+    </div>
+</footer>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="http://localhost:8000/admin/js/script.js"></script>
+<script>
+setTimeout(function () {
+  var maxRight = 0;
+  document.querySelectorAll('body *').forEach(function(el){
+    var r = el.getBoundingClientRect();
+    if (r.width > 0 && r.right > maxRight) maxRight = r.right;
+  });
+  var metrics = {
+    width: window.innerWidth,
+    docScroll: document.documentElement.scrollWidth,
+    bodyScroll: document.body.scrollWidth,
+    client: document.documentElement.clientWidth,
+    maxRight: Math.round(maxRight),
+    overflow: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth, Math.ceil(maxRight)) - document.documentElement.clientWidth,
+    dt: document.querySelectorAll('.dataTables_wrapper').length,
+    sidebarTransform: getComputedStyle(document.querySelector('.sidebar')).transform
+  };
+  document.body.setAttribute('data-responsive-metrics', JSON.stringify(metrics));
+}, 3000);
+</script></body>
+</html>
