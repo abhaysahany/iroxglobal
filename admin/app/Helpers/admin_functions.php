@@ -3,6 +3,7 @@
 use App\Models\DirectIncome;
 use App\Models\GlobalPoolIncome;
 use App\Models\ImportFund;
+use App\Models\LevelIncome;
 use App\Models\MemberDetail;
 use App\Models\RankIncome;
 use App\Models\StackingIncome;
@@ -76,7 +77,7 @@ function totalWallet()
 
 function totalIncomes()
 {
-    $total = totalReferralIncome() + totalDailyIncome() + totalGlobalRacIncome() + totalGlobalRacStarIncome() + totalRankIncome();
+    $total = totalReferralIncome() + totalDailyIncome() + totalLevelIncome() + totalGlobalRacIncome() + totalGlobalRacStarIncome() + totalRankIncome();
     return $total;
 }
 
@@ -84,6 +85,12 @@ function totalIncomes()
 function totalReferralIncome()
 {
     $sum = DirectIncome::where('status', 'Paid')->sum('amount');
+    return $sum;
+}
+
+function totalLevelIncome()
+{
+    $sum = LevelIncome::where('status', 'Paid')->sum('amount');
     return $sum;
 }
 

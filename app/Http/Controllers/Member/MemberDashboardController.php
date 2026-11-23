@@ -52,13 +52,13 @@ class MemberDashboardController extends Controller
         $result['totalDailyIncome'] = \Illuminate\Support\Facades\DB::table('direct_incomes')->where('memberid', $memberid)->sum('amount');
         $result['totalReferralIncome'] = \Illuminate\Support\Facades\DB::table('referral_incomes')->where('memberid', $memberid)->sum('amount');
         $result['totalRankIncome'] = \Illuminate\Support\Facades\DB::table('rank_incomes')->where('memberid', $memberid)->sum('amount');
-        $result['totalLevelIncome'] = 0;
+        $result['totalLevelIncome'] = \Illuminate\Support\Facades\DB::table('level_incomes')->where('memberid', $memberid)->where('status', 'Paid')->sum('amount');
         $result['totalIncome'] = $result['totalDailyIncome'] + $result['totalReferralIncome'] + $result['totalRankIncome'] + $result['totalLevelIncome'];
 
         $result['todaysDailyIncome'] = \Illuminate\Support\Facades\DB::table('direct_incomes')->where('memberid', $memberid)->whereDate('created_at', date('Y-m-d'))->sum('amount');
         $result['todaysReferralIncome'] = \Illuminate\Support\Facades\DB::table('referral_incomes')->where('memberid', $memberid)->whereDate('created_at', date('Y-m-d'))->sum('amount');
         $result['todaysRankIncome'] = \Illuminate\Support\Facades\DB::table('rank_incomes')->where('memberid', $memberid)->whereDate('created_at', date('Y-m-d'))->sum('amount');
-        $result['todaysLevelIncome'] = 0;
+        $result['todaysLevelIncome'] = \Illuminate\Support\Facades\DB::table('level_incomes')->where('memberid', $memberid)->where('status', 'Paid')->whereDate('created_at', date('Y-m-d'))->sum('amount');
         $result['todaysIncome'] = $result['todaysDailyIncome'] + $result['todaysReferralIncome'] + $result['todaysRankIncome'] + $result['todaysLevelIncome'];
 
          $result['imgData'] = DashImage::where('status', 'Live')->latest()->first();

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DirectIncome;
 use App\Models\GlobalPoolIncome;
 use App\Models\Income;
+use App\Models\LevelIncome;
 use App\Models\Member;
 use App\Models\MemberDetail;
 use App\Models\RankIncome;
@@ -119,6 +120,13 @@ class AdminIncomeController extends Controller
         $incomes = DirectIncome::with('member')->latest()->get();
 
         return view('admin.incomes.direct-income', compact('incomes'));
+    }
+
+    public function levelIncome(): View
+    {
+        $incomes = LevelIncome::with('member')->latest()->get();
+
+        return view('admin.incomes.level-income', compact('incomes'));
     }
 
       public function globalRec(): View

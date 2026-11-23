@@ -34,6 +34,7 @@
             'children' => [
                 ['label' => 'Daily Income', 'route' => 'member.incomes.daily'],
                 ['label' => 'Referral Income', 'route' => 'member.incomes.referral'],
+                ['label' => 'Level Income', 'route' => 'member.incomes.level'],
                 ['label' => 'Rank Income', 'route' => 'member.incomes.rank'],
                 ['label' => 'Global Rec Income', 'route' => 'member.incomes.globalRec'],
                 ['label' => 'Global Rec Star Income', 'route' => 'member.incomes.globalRecStar'],

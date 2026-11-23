@@ -224,6 +224,12 @@
                     <i class="fa-solid fa-user-check"></i>
                     <span>Referral Income</span>
                 </a>
+
+                <a href="{{ route('admin.incomes.level') }}"
+                    class="{{ request()->routeIs('admin.incomes.level') ? 'active' : '' }}">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>Level Income</span>
+                </a>
                <a href="{{ route('admin.incomes.global-rec') }}"
                     class="{{ request()->routeIs('admin.incomes.global-rec') ? 'active' : '' }}">
                     <i class="fa-solid fa-hand-holding-dollar"></i>

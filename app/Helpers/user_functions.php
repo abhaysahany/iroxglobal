@@ -5,6 +5,7 @@ use App\Models\DirectIncome;
 use App\Models\FundRequest;
 use App\Models\GlobalPoolIncome;
 use App\Models\ImportFund;
+use App\Models\LevelIncome;
 use App\Models\PoolUplineMember;
 use App\Models\MemberDetail;
 use App\Models\RankIncome;
@@ -226,7 +227,7 @@ function team_count_update($sponsorid)
 
 function totalIncome($memberid)
 {
-    $total = totalDailyIncome($memberid) + totalReferralIncome($memberid) + totalRankIncome($memberid) + totalGlobalRacIncome($memberid) + totalGlobalRacStarIncome($memberid);
+    $total = totalDailyIncome($memberid) + totalReferralIncome($memberid) + totalLevelIncome($memberid) + totalRankIncome($memberid) + totalGlobalRacIncome($memberid) + totalGlobalRacStarIncome($memberid);
     return $total;
 }
 
@@ -239,6 +240,12 @@ function totalDailyIncome($memberid)
 function totalReferralIncome($memberid)
 {
     $var = DirectIncome::where([['status', 'Paid'], ['memberid', $memberid]])->sum('amount');
+    return $var;
+}
+
+function totalLevelIncome($memberid)
+{
+    $var = LevelIncome::where([['status', 'Paid'], ['memberid', $memberid]])->sum('amount');
     return $var;
 }
 
@@ -266,7 +273,7 @@ function totalGlobalRacStarIncome($memberid)
 
 function todayIncome($memberid)
 {
-    $total = todayDailyIncome($memberid) + todayReferralIncome($memberid) + todayRankIncome($memberid) + todayGlobalRacIncome($memberid) + todayGlobalRacStarIncome($memberid);
+    $total = todayDailyIncome($memberid) + todayReferralIncome($memberid) + todayLevelIncome($memberid) + todayRankIncome($memberid) + todayGlobalRacIncome($memberid) + todayGlobalRacStarIncome($memberid);
     return $total;
 }
 
@@ -279,6 +286,12 @@ function todayDailyIncome($memberid)
 function todayReferralIncome($memberid)
 {
     $var = DirectIncome::where([['status', 'Paid'], ['memberid', $memberid]])->whereDate('created_at', date('Y-m-d'))->sum('amount');
+    return $var;
+}
+
+function todayLevelIncome($memberid)
+{
+    $var = LevelIncome::where([['status', 'Paid'], ['memberid', $memberid]])->whereDate('created_at', date('Y-m-d'))->sum('amount');
     return $var;
 }
 

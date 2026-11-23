@@ -20,9 +20,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AdminAuthController::class, 'showLogin'])->name('home');
 
+Route::get('/captcha', [AdminAuthController::class, 'captcha'])->name('captcha');
 Route::post('/login', [AdminAuthController::class, 'login'])->name('login.submit');
 Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
-Route::get('/send-admin-otp', [AdminAuthController::class, 'sendAdminOtp']);
 
 //forget password
 Route::get('/forget-password', [AdminAuthController::class, 'forgetPassword']);
@@ -116,6 +116,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/incomes/rank/manual-transfer', [AdminIncomeController::class, 'storeRankIncomeManualTransfer'])->name('incomes.rank.manual-transfer.store');
         Route::get('/incomes/staking', [AdminIncomeController::class, 'stakingIncome'])->name('incomes.staking');
         Route::get('/incomes/direct', [AdminIncomeController::class, 'directIncome'])->name('incomes.direct');
+        Route::get('/incomes/level', [AdminIncomeController::class, 'levelIncome'])->name('incomes.level');
         Route::get('/incomes/global-rec', [AdminIncomeController::class, 'globalRec'])->name('incomes.global-rec');
         Route::get('/incomes/global-rec-star', [AdminIncomeController::class, 'globalRecStar'])->name('incomes.global-rec-star');
         Route::get('/incomes/roi', [AdminIncomeController::class, 'roiIncomeDistribution'])->name('incomes.roi');

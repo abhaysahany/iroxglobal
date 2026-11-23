@@ -54,6 +54,7 @@ Route::prefix('member')->name('member.')->group(function () {
         // incomes
         Route::get('/incomes/daily-income', [MemberIncomeController::class, 'daily'])->name('incomes.daily');
         Route::get('/incomes/referral-income', [MemberIncomeController::class, 'referral'])->name('incomes.referral');
+        Route::get('/incomes/level-income', [MemberIncomeController::class, 'level'])->name('incomes.level');
         Route::get('/incomes/rank-income', [MemberIncomeController::class, 'rank'])->name('incomes.rank');
         Route::get('/incomes/global-rec', [MemberIncomeController::class, 'globalRec'])->name('incomes.globalRec');
         Route::get('/incomes/global-rec-star', [MemberIncomeController::class, 'globalRecStar'])->name('incomes.globalRecStar');

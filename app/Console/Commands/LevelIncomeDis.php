@@ -95,7 +95,6 @@ class LevelIncomeDis extends Command
                         $insert->memberid = $sponsorid;
                         $insert->level = $i;
                         $insert->amount = $amount;
-                        $insert->month = date('M');
                         $insert->level_id = $memberid;
                         $insert->name = $memData->name;
                         $insert->staking_income = $roiAmount;

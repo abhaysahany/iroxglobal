@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Models\DirectIncome;
 use App\Models\GlobalPoolIncome;
+use App\Models\LevelIncome;
 use App\Models\MemberDetail;
 use App\Models\RankIncome;
 use App\Models\StackingIncome;
@@ -25,6 +26,14 @@ class MemberIncomeController extends Controller
         $result['data'] = MemberDetail::where('memberid', $memberid)->first();
         $result['rData'] = DirectIncome::where('memberid', $memberid)->get();
         return view('member.incomes.referral-income')->with($result);
+    }
+
+    public function level()
+    {
+        $memberid = session('MEMBER_ID');
+        $result['data'] = MemberDetail::where('memberid', $memberid)->first();
+        $result['rData'] = LevelIncome::where('memberid', $memberid)->latest()->get();
+        return view('member.incomes.level-income')->with($result);
     }
 
     public function rank()

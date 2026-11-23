@@ -1572,10 +1572,11 @@
     $addonRankIncome = (float) ($addonData?->rank_income ?? 0);
     $addonDailyIncome = (float) ($addonData?->daily_income ?? 0);
     $addonReferralIncome = (float) ($addonData?->referral_income ?? 0);
+    $addonLevelIncome = (float) ($addonData?->level_income ?? 0);
     $addonGlobalRecIncome = (float) ($addonData?->global_rec_income ?? 0);
     $addonGlobalRecStarIncome = (float) ($addonData?->global_rec_star_income ?? 0);
     $addonTotalIncome =
-        $addonRankIncome + $addonDailyIncome + $addonReferralIncome + $addonGlobalRecIncome + $addonGlobalRecStarIncome;
+        $addonRankIncome + $addonDailyIncome + $addonReferralIncome + $addonLevelIncome + $addonGlobalRecIncome + $addonGlobalRecStarIncome;
     $dashboardIncomeCards = [
         [
             'label' => 'Total Overview All Incomes',
@@ -1588,6 +1589,12 @@
             'icon' => 'fa-hand-holding-dollar',
             'total' => totalReferralIncome($dashboardMemberId) + $addonReferralIncome,
             'today' => todayReferralIncome($dashboardMemberId),
+        ],
+        [
+            'label' => 'Level Income',
+            'icon' => 'fa-layer-group',
+            'total' => totalLevelIncome($dashboardMemberId) + $addonLevelIncome,
+            'today' => todayLevelIncome($dashboardMemberId),
         ],
         [
             'label' => 'Daily Income',
@@ -1877,11 +1884,11 @@
                                 <div class="dashboard-income-values">
                                     <div>
                                         <small>Total Income</small>
-                                        <strong>${{ number_format((float) $incomeCard['total'], 2) }}</strong>
+                                        <strong>${{ (float)$incomeCard['total'] == round((float)$incomeCard['total'], 2) ? number_format((float) $incomeCard['total'], 2) : rtrim(rtrim(number_format((float) $incomeCard['total'], 5), '0'), '.') }}</strong>
                                     </div>
                                     <div>
                                         <small>Today Income</small>
-                                        <strong>${{ number_format((float) $incomeCard['today'], 2) }}</strong>
+                                        <strong>${{ (float)$incomeCard['today'] == round((float)$incomeCard['today'], 2) ? number_format((float) $incomeCard['today'], 2) : rtrim(rtrim(number_format((float) $incomeCard['today'], 5), '0'), '.') }}</strong>
                                     </div>
                                 </div>
                             </article>

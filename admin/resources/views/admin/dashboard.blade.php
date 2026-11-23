@@ -522,6 +522,18 @@
 
         <div class="dashboard-stat-card accent-purple dashboard-stat-col-4">
             <div class="dashboard-stat-content">
+                {{-- <span class="dashboard-stat-icon">LI</span> --}}
+                <div>
+                    <p>Level Income</p>
+                    <h2>$ {{ (float)totalLevelIncome() == round((float)totalLevelIncome(), 2) ? number_format(totalLevelIncome(), 2) : rtrim(rtrim(number_format((float)totalLevelIncome(), 5), '0'), '.') }}</h2>
+                    <small class="growth success">Total Level Income Records</small>
+                </div>
+            </div>
+            <div class="mini-line"><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+
+        <div class="dashboard-stat-card accent-purple dashboard-stat-col-4">
+            <div class="dashboard-stat-content">
                 {{-- <span class="dashboard-stat-icon">RI</span> --}}
                 <div>
                     <p>Rank Income</p>
@@ -532,7 +544,7 @@
             <div class="mini-line"><span></span><span></span><span></span><span></span><span></span></div>
         </div>
 
-        <div class="dashboard-stat-card accent-orange dashboard-stat-col-6">
+        <div class="dashboard-stat-card accent-orange dashboard-stat-col-4">
             <div class="dashboard-stat-content">
                 {{-- <span class="dashboard-stat-icon">GRI</span> --}}
                 <div>
@@ -544,7 +556,7 @@
             <div class="mini-line"><span></span><span></span><span></span><span></span><span></span></div>
         </div>
 
-        <div class="dashboard-stat-card accent-orange dashboard-stat-col-6">
+        <div class="dashboard-stat-card accent-orange dashboard-stat-col-4">
             <div class="dashboard-stat-content">
                 {{-- <span class="dashboard-stat-icon">GRSI</span> --}}
                 <div>
