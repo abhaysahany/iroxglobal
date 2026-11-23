@@ -280,9 +280,10 @@
                                                 $directType = trim((string)($row->direct_type ?? ''));
                                                 $directStatus = (int)($row->direct_status ?? 0);
                                                 $isAssigned = ($directStatus === 1) || !empty($directType);
+                                                $sponsorLevelDownline = (int)($data->level_downline ?? 0);
                                             @endphp
 
-                                            @if (strtolower($row->status ?? '') === 'active' && ! $isAssigned)
+                                            @if ($sponsorLevelDownline < 2 && strtolower($row->status ?? '') === 'active' && ! $isAssigned)
                                                 <div style="display: inline-flex; gap: 8px; align-items: center; justify-content: center;">
                                                     <form action="{{ route('member.referral.assign-direct') }}" method="POST" style="margin: 0;" onsubmit="return confirm('Are you sure you want to assign member {{ $row->memberid }} as a Pool Member?');">
                                                         @csrf

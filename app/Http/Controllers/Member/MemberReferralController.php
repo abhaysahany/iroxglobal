@@ -17,6 +17,26 @@ class MemberReferralController extends Controller
     {
         $memberid = session('MEMBER_ID');
         $result['data'] = MemberDetail::where('memberid', $memberid)->first();
+
+        if ($result['data'] && (int) ($result['data']->level_downline ?? 0) >= 2) {
+            $unassignedDirects = MemberDetail::where([
+                ['sponsorid', $result['data']['memberid']],
+                ['status', 'Active'],
+            ])->where(function ($q) {
+                $q->whereNull('direct_type')
+                  ->orWhere('direct_type', '')
+                  ->orWhere('direct_status', 0);
+            })->get();
+
+            foreach ($unassignedDirects as $u) {
+                updateDownline($result['data']['memberid']);
+                DB::table('member_details')->where('id', $u->id)->update([
+                    'direct_status' => 1,
+                    'direct_type'   => 'Pool',
+                ]);
+            }
+        }
+
         $result['directData'] = MemberDetail::where('sponsorid', $result['data']['memberid'])->orderBy('created_at', 'DESC')->get();
         return view('member.levels.direct-members')->with($result);
     }
@@ -67,6 +87,11 @@ class MemberReferralController extends Controller
             session()->flash('successMsg', 'Member ' . $memberId . ' successfully assigned as Pool Member.');
         } elseif ($type === 'Level') {
             $sponsor = MemberDetail::where('memberid', $sponsorId)->first();
+            if ($sponsor && (int) ($sponsor->level_downline ?? 0) >= 2) {
+                session()->flash('failedMsg', 'You already have 2 Level Members. Additional members can only be assigned as Pool Members.');
+                return redirect()->back();
+            }
+
             if ($sponsor) {
                 $sponsor->level_downline = ($sponsor->level_downline ?? 0) + 1;
                 $sponsor->save();

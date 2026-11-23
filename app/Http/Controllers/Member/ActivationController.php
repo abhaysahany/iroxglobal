@@ -71,13 +71,24 @@ class ActivationController extends Controller
                 session()->flash('failedMsg', 'Not Enough balance in your Fund wallet.');
                 return redirect()->back();
             }
+            $sponsor = MemberDetail::where('memberid', $sponsorid)->first();
+            $sponsorLevelDownline = $sponsor ? (int) ($sponsor->level_downline ?? 0) : 0;
+
             $p2p_wallet = $check->p2p_wallet;
             $check->p2p_wallet -= $package;
             $check->status = 'Active';
             $check->package = $package;
             $check->self_biz += $package;
             $check->team_biz += $package;
-            $check->direct_status = 0;
+
+            if ($sponsorLevelDownline >= 2) {
+                $check->direct_status = 1;
+                $check->direct_type = 'Pool';
+            } else {
+                $check->direct_status = 0;
+                $check->direct_type = null;
+            }
+
             $check->activated_at = date('Y-m-d H:i:s');
             $check->save();
 
@@ -96,7 +107,9 @@ class ActivationController extends Controller
             $new->save();
 
             updateUpline($sponsorid, $memberid);
-            // updateDownline($sponsorid); // Moved to manual selection by sponsor in Direct Members page (Pool vs Level)
+            if ($sponsorLevelDownline >= 2) {
+                updateDownline($sponsorid);
+            }
             directIncome($sponsorid, $memberid, $name, $package, $type);
             team_count_update($sponsorid);
 
