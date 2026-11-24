@@ -15,6 +15,7 @@ use App\Models\PaymentDetail;
 use App\Models\WalletTransfer;
 use App\Models\SuperAdmin;
 use App\Models\SetRate;
+use App\Models\Setting;
 use App\Models\StakingDetail;
 use Illuminate\Support\Str;
 use DateTime;
@@ -40,6 +41,7 @@ class MemberWalletController extends Controller
 
             $result['check'] = date('Y-m-d', strtotime($newDate . '+5 days'));
         }
+        $result['setting'] = Setting::first();
         return view('member.wallet.income-wallet')->with($result);
     }
 
@@ -96,8 +98,29 @@ class MemberWalletController extends Controller
         //     $deductAmount = 0;
         // }
 
-        $rates = Deduction::find(1);
-        $rate = $rates->rate;
+        $setting = Setting::first();
+        $withdrawalStatus = $setting?->withdrawal_status ?? 'enabled';
+        if ($withdrawalStatus === 'disabled') {
+            $notice = $setting?->withdrawal_notice ?: 'Withdrawal service is temporarily paused. Please try again later.';
+            session()->flash('failedMsg', $notice);
+            return redirect()->back();
+        }
+
+        $minWithdrawal = (float) ($setting?->min_withdrawal ?? 5.00);
+        $maxWithdrawal = $setting?->max_withdrawal ? (float) $setting->max_withdrawal : null;
+        $dailyLimit = $setting?->daily_max_withdrawal ? (float) $setting->daily_max_withdrawal : null;
+
+        $rate = 5.00;
+        if ($setting && $setting->withdrawal_fee_percent !== null) {
+            $rate = (float) $setting->withdrawal_fee_percent;
+        } else {
+            try {
+                $rates = Deduction::find(1);
+                if ($rates && isset($rates->rate)) {
+                    $rate = (float) $rates->rate;
+                }
+            } catch (\Throwable $e) {}
+        }
 
         $service = $amount / 100 * $rate;
         $netAmount = $amount - $service;
@@ -144,14 +167,26 @@ class MemberWalletController extends Controller
             return redirect()->back();
         }
 
-        if ($amount <= 0) {
-            session()->flash('failedMsg', 'Invalid Amount Entered. Amount must be grater than 5$');
+        if ($amount <= 0 || $amount < $minWithdrawal) {
+            session()->flash('failedMsg', 'Invalid Amount Entered. Amount must be at least ' . $minWithdrawal . '$');
             return redirect()->back();
         }
 
-        if ($amount < 5) {
-            session()->flash('failedMsg', 'Invalid Amount Entered. Amount must be grater than 5$');
+        if ($maxWithdrawal && $amount > $maxWithdrawal) {
+            session()->flash('failedMsg', 'Withdrawal amount exceeds maximum limit of ' . $maxWithdrawal . '$ per request.');
             return redirect()->back();
+        }
+
+        if ($dailyLimit && $dailyLimit > 0) {
+            $todayWithdrawn = WithdrawalRequest::where('memberid', $memberid)
+                ->whereDate('created_at', date('Y-m-d'))
+                ->whereNotIn('status', ['Cancelled', 'Rejected'])
+                ->sum('gross_amount');
+            if (($todayWithdrawn + $amount) > $dailyLimit) {
+                $remaining = max(0, $dailyLimit - $todayWithdrawn);
+                session()->flash('failedMsg', 'Daily withdrawal limit of ' . $dailyLimit . '$ exceeded. Remaining limit today: ' . $remaining . '$.');
+                return redirect()->back();
+            }
         }
         
         if ($amount > $mem->wallet) {

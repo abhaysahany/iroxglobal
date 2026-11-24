@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\MemberDetail;
+use App\Models\SetRate;
+use App\Models\Setting;
 use App\Models\Withdrawal;
 use App\Models\WithdrawalRequest;
 use Illuminate\Http\RedirectResponse;
@@ -20,6 +22,52 @@ use Throwable;
 
 class AdminWithdrawalController extends Controller
 {
+    public function settings(): View
+    {
+        $title = 'Withdrawal Settings';
+        $setting = Setting::first();
+        if (!$setting) {
+            $setting = Setting::create([
+                'min_withdrawal' => 10.00,
+                'max_withdrawal' => 5000.00,
+                'withdrawal_fee_percent' => 5.00,
+                'daily_max_withdrawal' => 10000.00,
+                'withdrawal_status' => 'enabled',
+                'withdrawal_notice' => 'Withdrawals are processed within 24 to 48 hours.',
+            ]);
+        }
+
+        return view('admin.withdrawals.settings', compact('title', 'setting'));
+    }
+
+    public function updateSettings(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'min_withdrawal' => ['required', 'numeric', 'min:0'],
+            'max_withdrawal' => ['required', 'numeric', 'gte:min_withdrawal'],
+            'withdrawal_fee_percent' => ['required', 'numeric', 'min:0', 'max:100'],
+            'daily_max_withdrawal' => ['nullable', 'numeric', 'min:0'],
+            'withdrawal_status' => ['required', 'in:enabled,disabled'],
+            'withdrawal_notice' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $setting = Setting::firstOrNew();
+        $setting->fill($validated);
+        $setting->save();
+
+        try {
+            $setRate = SetRate::find(1);
+            if ($setRate) {
+                $setRate->rate = $validated['withdrawal_fee_percent'];
+                $setRate->save();
+            }
+        } catch (\Throwable $e) {
+            // graceful fallback
+        }
+
+        return back()->with('success', 'Withdrawal settings updated successfully.');
+    }
+
     public function index(): View
     {
         $withdrawals = Withdrawal::with('member')->latest()->paginate(10);

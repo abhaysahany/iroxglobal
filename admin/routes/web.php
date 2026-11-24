@@ -127,6 +127,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/p2p/wallet-adjustments', [AdminP2PController::class, 'walletAdjustments'])->name('p2p.wallet-adjustments');
         Route::get('/p2p/wallet-reports', [AdminP2PController::class, 'walletReports'])->name('p2p.wallet-reports');
         Route::get('/p2p/wallet-audit-logs', [AdminP2PController::class, 'walletAuditLogs'])->name('p2p.wallet-audit-logs');
+        Route::get('/withdrawals/settings', [AdminWithdrawalController::class, 'settings'])->name('withdrawals.settings');
+        Route::post('/withdrawals/settings', [AdminWithdrawalController::class, 'updateSettings'])->name('withdrawals.settings.update');
         Route::get('/withdrawals/requests', [AdminWithdrawalController::class, 'requests'])->name('withdrawals.requests');
         Route::get('/withdrawals/approved', [AdminWithdrawalController::class, 'approved'])->name('withdrawals.approved');
         Route::get('/withdrawals/cancelled', [AdminWithdrawalController::class, 'cancelled'])->name('withdrawals.cancelled');

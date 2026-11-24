@@ -310,6 +310,10 @@
             <p class="sidebar-submenu-heading">WITHDRAWAL &amp; PAYOUTS</p>
 
             <div class="sidebar-submenu">
+                <a href="{{ route('admin.withdrawals.settings') }}" class="{{ request()->routeIs('admin.withdrawals.settings*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Withdrawal Settings</span>
+                </a>
                 <a href="{{ route('admin.withdrawals.requests') }}" class="{{ request()->routeIs('admin.withdrawals.requests') ? 'active' : '' }}">
                     <i class="fa-solid fa-hourglass-half"></i>
                     <span>Withdrawal Requests</span>
