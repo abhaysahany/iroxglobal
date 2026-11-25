@@ -42,6 +42,13 @@ class MemberWalletController extends Controller
             $result['check'] = date('Y-m-d', strtotime($newDate . '+5 days'));
         }
         $result['setting'] = Setting::first();
+        $result['hasWithdrawnToday'] = WithdrawalRequest::where('memberid', $memberid)
+            ->where(function ($q) {
+                $q->whereDate('created_at', date('Y-m-d'))
+                  ->orWhereDate('request_date', date('Y-m-d'));
+            })
+            ->whereNotIn('status', ['Cancelled', 'Rejected'])
+            ->exists();
         return view('member.wallet.income-wallet')->with($result);
     }
 
@@ -150,17 +157,18 @@ class MemberWalletController extends Controller
             return redirect()->back();
         }
 
-        //$count = WithdrawalRequest::where('memberid', $memberid)->whereDate('created_at', date('Y-m-d'))->count();
-        // if ($count > 0) {
-        //     session()->flash('failedMsg', 'Only one withdrawal request is allowed per day.');
-        //     return redirect()->back();
-        // }
+        $todayWithdrawal = WithdrawalRequest::where('memberid', $memberid)
+            ->where(function ($q) {
+                $q->whereDate('created_at', date('Y-m-d'))
+                  ->orWhereDate('request_date', date('Y-m-d'));
+            })
+            ->whereNotIn('status', ['Cancelled', 'Rejected'])
+            ->exists();
 
-        // $check = WithdrawalRequest::where([['memberid', $memberid], ['status', 'Pending']])->count();
-        // if ($check > 0) {
-        //     session()->flash('failedMsg', 'Your Last Withdrawal Still Pending. Please Wait');
-        //     return redirect()->back();
-        // }
+        if ($todayWithdrawal) {
+            session()->flash('failedMsg', 'You have already submitted a withdrawal request today. Only one withdrawal is allowed per day. Please try again tomorrow.');
+            return redirect()->back();
+        }
 
         if ($mem['status'] != 'Active') {
             session()->flash('failedMsg', 'Your account is not active. Withdrawal request can be initiated by active members only');
