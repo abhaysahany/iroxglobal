@@ -81,7 +81,7 @@
                                     {{ $setting->withdrawal_notice ?: 'Withdrawal requests are temporarily paused for maintenance.' }}
                                 </div>
                             @elseif (!empty($hasWithdrawnToday))
-                                <div style="background: rgba(234, 179, 8, 0.15); border: 1px solid #eab308; color: #fde047; padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-top: 10px;">
+                                <div style="background: rgba(234, 178, 8, 0); border: 1px solid #eac108ff; color: #e79213ff; padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-top: 10px;">
                                     <i class="fa-solid fa-clock me-1"></i>
                                     You have already submitted a withdrawal request today. Only 1 withdrawal is allowed per day. Next withdrawal will be available tomorrow.
                                 </div>
