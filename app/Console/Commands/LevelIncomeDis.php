@@ -85,12 +85,13 @@ class LevelIncomeDis extends Command
                 }
 
                 $mem = MemberDetail::where([['memberid', $sponsorid], ['status', 'Active']])->first();
+                $levelDownline = $mem->level_downline;
 
                 if ($mem) {
                     $rate = $rates[$i];
                     $amount = ($roiAmount * $rate) / 100;
 
-                    if ($amount > 0) {
+                    if ($amount > 0 && $levelDownline >= 2) {
                         $insert = new LevelIncome;
                         $insert->memberid = $sponsorid;
                         $insert->level = $i;

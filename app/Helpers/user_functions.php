@@ -9,6 +9,8 @@ use App\Models\LevelIncome;
 use App\Models\PoolUplineMember;
 use App\Models\MemberDetail;
 use App\Models\RankIncome;
+use App\Models\RewardIncome;
+use App\Models\SalaryIncome;
 use App\Models\WithdrawalRequest;
 use App\Models\StackingIncome;
 use App\Models\StakingDetail;
